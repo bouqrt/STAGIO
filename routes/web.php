@@ -35,4 +35,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     });
 });
 
+Route::middleware(['auth', 'role:entreprise'])->group(function () {
+    Route::get('/entreprise/profile', [EntrepriseController::class, 'create']);
+    Route::post('/entreprise/profile', [EntrepriseController::class, 'store']);
+});
+
 require __DIR__.'/auth.php';
