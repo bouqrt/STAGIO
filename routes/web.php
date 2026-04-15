@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EntrepriseController;
+use App\Http\Controllers\OffreController;
 
 
 
@@ -41,6 +42,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:entreprise'])->group(function () {
     Route::get('/entreprise/profile', [EntrepriseController::class, 'create']);
     Route::post('/entreprise/profile', [EntrepriseController::class, 'store']);
+});
+
+Route::middleware(['auth', 'role:entreprise'])->group(function () {
+    Route::get('/offres/create', [OffreController::class, 'create']);
+    Route::post('/offres', [OffreController::class, 'store']);
 });
 
 require __DIR__.'/auth.php';
