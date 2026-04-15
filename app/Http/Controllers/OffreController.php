@@ -28,4 +28,11 @@ public function store(Request $request)
 
     return redirect('/entreprise/dashboard');
 }
+
+public function index()
+    {
+    $offres = Offre::where('is_published', true)->latest()->get();
+
+    return view('offres.index', compact('offres'));
+    }
 }
