@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Offre extends Model
 {
+    protected $fillable = [
+    'entreprise_id',
+    'title',
+    'description',
+    'location',
+    'type'
+    ];
     public function entreprise()
     {
     return $this->belongsTo(Entreprise::class);
