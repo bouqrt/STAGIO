@@ -6,7 +6,6 @@ use App\Http\Controllers\EntrepriseController;
 
 
 
-
 Route::get('/', function () {
     return view('welcome');
 });
