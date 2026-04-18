@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EntrepriseController;
 use App\Http\Controllers\OffreController;
-use App\Http\Controllers\OffreController;
+
 
 
 Route::get('/', function () {

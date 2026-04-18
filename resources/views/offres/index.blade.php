@@ -8,3 +8,4 @@
         <p><strong>Type:</strong> {{ $offre->type }}</p>
     </div>
 @endforeach
+
