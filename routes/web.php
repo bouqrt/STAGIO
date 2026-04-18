@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EntrepriseController;
 use App\Http\Controllers\OffreController;
+use App\Http\Controllers\CandidatureController;
+
 
 
 
@@ -50,5 +52,9 @@ Route::middleware(['auth', 'role:entreprise'])->group(function () {
 });
 
 Route::get('/offres', [OffreController::class, 'index']);
+
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::post('/offres/{id}/apply', [CandidatureController::class, 'store']);
+});
 
 require __DIR__.'/auth.php';
