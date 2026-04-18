@@ -6,6 +6,10 @@
         <p>{{ $offre->description }}</p>
         <p><strong>Lieu:</strong> {{ $offre->location }}</p>
         <p><strong>Type:</strong> {{ $offre->type }}</p>
+        <form method="POST" action="/offres/{{ $offre->id }}/apply">
+             @csrf
+            <button type="submit">Postuler</button>
+        </form>
     </div>
 @endforeach
 
