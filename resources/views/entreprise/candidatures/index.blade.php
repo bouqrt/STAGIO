@@ -5,6 +5,11 @@
         <p><strong>Student:</strong> {{ $candidature->user->name }}</p>
         <p><strong>Offre:</strong> {{ $candidature->offre->title }}</p>
         <p><strong>Status:</strong> {{ $candidature->status }}</p>
+        <p>
+            <a href="{{ asset('storage/' . $candidature->cv) }}" target="_blank">
+                Voir CV
+            </a>
+        </p>
         <form method="POST" action="/candidatures/{{ $candidature->id }}/accept" style="display:inline;">
             @csrf
             <button type="submit">Accepter</button>
