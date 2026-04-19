@@ -1,3 +1,7 @@
+@if(session('success'))
+    <p style="color:green">{{ session('success') }}</p>
+@endif
+
 <h1>Offres disponibles</h1>
 
 @foreach($offres as $offre)

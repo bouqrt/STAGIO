@@ -57,4 +57,12 @@ Route::middleware(['auth', 'role:student'])->group(function () {
     Route::post('/offres/{id}/apply', [CandidatureController::class, 'store']);
 });
 
+Route::middleware(['auth', 'role:entreprise'])->group(function () {
+    Route::get('/entreprise/candidatures', [CandidatureController::class, 'index']);
+});
+
+
+
+
+
 require __DIR__.'/auth.php';
