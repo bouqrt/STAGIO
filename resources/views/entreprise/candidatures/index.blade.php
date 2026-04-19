@@ -6,4 +6,13 @@
         <p><strong>Offre:</strong> {{ $candidature->offre->title }}</p>
         <p><strong>Status:</strong> {{ $candidature->status }}</p>
     </div>
+    <form method="POST" action="/candidatures/{{ $candidature->id }}/accept" style="display:inline;">
+    @csrf
+    <button type="submit">Accepter</button>
+    </form>
+
+    <form method="POST" action="/candidatures/{{ $candidature->id }}/refuse" style="display:inline;">
+    @csrf
+    <button type="submit">Refuser</button>
+    </form>
 @endforeach
