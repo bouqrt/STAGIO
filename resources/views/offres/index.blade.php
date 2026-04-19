@@ -10,8 +10,9 @@
         <p>{{ $offre->description }}</p>
         <p><strong>Lieu:</strong> {{ $offre->location }}</p>
         <p><strong>Type:</strong> {{ $offre->type }}</p>
-        <form method="POST" action="/offres/{{ $offre->id }}/apply">
-             @csrf
+        <form method="POST" action="/offres/{{ $offre->id }}/apply" enctype="multipart/form-data">
+            @csrf
+            <input type="file" name="cv" required>
             <button type="submit">Postuler</button>
         </form>
     </div>
