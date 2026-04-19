@@ -26,4 +26,24 @@ class CandidatureController extends Controller
          
         return view('entreprise.candidatures.index', compact('candidatures'));
     }
+
+    public function accept($id)
+    {
+    $candidature = Candidature::findOrFail($id);
+    $candidature->update([
+        'status' => 'accepted'
+    ]);
+
+    return back();
+    }
+
+    public function refuse($id)
+    {
+    $candidature = Candidature::findOrFail($id);
+    $candidature->update([
+        'status' => 'refused'
+    ]);
+
+    return back();
+    }
 }
