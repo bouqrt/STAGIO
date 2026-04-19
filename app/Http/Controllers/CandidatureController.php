@@ -11,14 +11,21 @@ class CandidatureController extends Controller
 {
     public function store(Request $request, $id)
     {
+    $request->validate([
+        'cv' => 'required|mimes:pdf,doc,docx|max:2048',
+    ]);
+
     $offre = Offre::findOrFail($id);
+
+    $cvPath = $request->file('cv')->store('cvs', 'public');
 
     Candidature::create([
         'user_id' => auth()->id(),
         'offre_id' => $offre->id,
+        'cv' => $cvPath,
     ]);
 
-        return back()->with('success', 'Candidature envoyée');
+    return back()->with('success', 'Candidature envoyée avec CV');
     }
 
     public function index(){
