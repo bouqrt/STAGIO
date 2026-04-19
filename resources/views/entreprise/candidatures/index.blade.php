@@ -1,15 +1,31 @@
+@extends('layouts.app')
+
+@section('content')
+
 <h1>Candidatures reçues</h1>
 
 @foreach($candidatures as $candidature)
-    <div style="border:1px solid black; margin:10px; padding:10px;">
+    <div class="card">
+
         <p><strong>Student:</strong> {{ $candidature->user->name }}</p>
         <p><strong>Offre:</strong> {{ $candidature->offre->title }}</p>
-        <p><strong>Status:</strong> {{ $candidature->status }}</p>
-        <p>
+
+        <p class="status 
+            {{ $candidature->status == 'accepted' ? 'accepted' : '' }}
+            {{ $candidature->status == 'refused' ? 'refused' : '' }}
+            {{ $candidature->status == 'pending' ? 'pending' : '' }}">
+            
+            {{ $candidature->status }}
+        </p>
+
+        @if($candidature->cv)
             <a href="{{ asset('storage/' . $candidature->cv) }}" target="_blank">
                 Voir CV
             </a>
-        </p>
+        @endif
+
+        <br><br>
+
         <form method="POST" action="/candidatures/{{ $candidature->id }}/accept" style="display:inline;">
             @csrf
             <button type="submit">Accepter</button>
@@ -17,8 +33,10 @@
 
         <form method="POST" action="/candidatures/{{ $candidature->id }}/refuse" style="display:inline;">
             @csrf
-            <button type="submit">Refuser</button>
+            <button type="submit" class="btn-danger">Refuser</button>
         </form>
+
     </div>
-    
 @endforeach
+
+@endsection
