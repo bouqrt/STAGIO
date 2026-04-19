@@ -59,6 +59,8 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 
 Route::middleware(['auth', 'role:entreprise'])->group(function () {
     Route::get('/entreprise/candidatures', [CandidatureController::class, 'index']);
+    Route::post('/candidatures/{id}/accept', [CandidatureController::class, 'accept']);
+    Route::post('/candidatures/{id}/refuse', [CandidatureController::class, 'refuse']);
 });
 
 
