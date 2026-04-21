@@ -1,17 +1,23 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
+@section('content')
+
+<h1> Student Dashboard</h1>
+
+<div class="grid">
+
+    <div class="card">
+        <h3> Voir les offres</h3>
+        <p>Consulte les offres disponibles</p>
+        <a href="/offres"><button>Voir</button></a>
     </div>
-</x-app-layout>
+
+    <div class="card">
+        <h3> Mes candidatures</h3>
+        <p>Suivre mes demandes</p>
+        <a href="/mes-candidatures"><button>Voir</button></a>
+    </div>
+
+</div>
+
+@endsection

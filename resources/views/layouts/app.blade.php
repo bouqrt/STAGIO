@@ -2,68 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>STAGIO</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f9;
-            margin: 0;
-        }
-
-        header {
-            background: #1e293b;
-            color: white;
-            padding: 15px;
-        }
-
-        .container {
-            padding: 20px;
-        }
-
-        .card {
-            background: white;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        button {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #2563eb;
-        }
-
-        .btn-danger {
-            background: red;
-        }
-
-        .status {
-            font-weight: bold;
-        }
-
-        .accepted { color: green; }
-        .refused { color: red; }
-        .pending { color: orange; }
-    </style>
+    <title>Stagio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
 <body>
 
-<header>
-    <h2>STAGIO Platform</h2>
-</header>
+<div class="app">
+    @auth
+    <aside class="sidebar">
+        <div class="logo">
+            <div class="logo-box">S</div>
+            <span>STAGIO</span>
+        </div>
 
-<div class="container">
-    @yield('content')
+        <nav>
+            <a href="/dashboard" class="{{ request()->is('dashboard') ? 'active' : '' }}">🏠 Dashboard</a>
+
+            @if(auth()->user()->role === 'student')
+                <a href="/offres"> Browse Offers</a>
+                <a href="/mes-candidatures"> My Applications</a>
+            @endif
+
+            @if(auth()->user()->role === 'entreprise')
+                <a href="/offres"> My Offers</a>
+                <a href="/entreprise/candidatures"> Applications</a>
+            @endif
+
+            <a href="#"> Settings</a>
+        </nav>
+    </aside>
+    @endauth
+
+    <main class="main">
+
+        @auth
+        <div class="topbar">
+            <h2>@yield('title', 'Dashboard')</h2>
+            <div class="notif">🔔</div>
+        </div>
+        @endauth
+
+        <div class="content">
+            @yield('content')
+        </div>
+
+    </main>
+
 </div>
 
 </body>
