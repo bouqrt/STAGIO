@@ -10,17 +10,17 @@ class RoleMiddleware
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  Closure(Request): (Response)  $next
      */
-    public function handle($request, Closure $next, ...$roles): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if (!auth()->check()){
-            return redirect ('/login');
+        // Redirect guests to the login page.
+        if (! auth()->check()) {
+            return redirect('/login');
         }
 
-        if (!in_array(auth()->user()->role, $roles)){
-            abort(403, ' Accès non autorisé ');
+        // Stop access when the user role is not allowed.
+        if (! in_array(auth()->user()->role, $roles)) {
+            abort(403, 'Access not allowed.');
         }
 
         return $next($request);

@@ -5,22 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Entreprise extends Model
-{   
+{
     protected $fillable = [
-    'user_id',
-    'name',
-    'email',
-    'phone',
-    'address',
-    'description'
+        'user_id',
+        'name',
+        'email',
+        'phone',
+        'address',
+        'description',
     ];
+
+    // Get the user that owns the entreprise profile.
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    // Get the offers created by the entreprise.
     public function offres()
     {
-    return $this->hasMany(Offre::class);
+        return $this->hasMany(Offre::class);
     }
 }

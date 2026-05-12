@@ -10,13 +10,16 @@ class Candidature extends Model
         'user_id',
         'offre_id',
         'cv',
-        'status'
+        'status',
     ];
+
+    // Get the student who applied.
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    // Get the offer linked to the application.
     public function offre()
     {
         return $this->belongsTo(Offre::class);

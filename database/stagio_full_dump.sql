@@ -1,0 +1,187 @@
+CREATE DATABASE IF NOT EXISTS `stagio` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `stagio`;
+
+SET FOREIGN_KEY_CHECKS=0;
+
+DROP TABLE IF EXISTS `cache`;
+CREATE TABLE `cache` (
+  `key` varchar(255) NOT NULL,
+  `value` mediumtext NOT NULL,
+  `expiration` int(11) NOT NULL,
+  PRIMARY KEY (`key`),
+  KEY `cache_expiration_index` (`expiration`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
+('laravel-cache-bouchraelqrt@gmail.com|127.0.0.1', 'i:1;', '1777975796'),
+('laravel-cache-bouchraelqrt@gmail.com|127.0.0.1:timer', 'i:1777975796;', '1777975796');
+
+DROP TABLE IF EXISTS `cache_locks`;
+CREATE TABLE `cache_locks` (
+  `key` varchar(255) NOT NULL,
+  `owner` varchar(255) NOT NULL,
+  `expiration` int(11) NOT NULL,
+  PRIMARY KEY (`key`),
+  KEY `cache_locks_expiration_index` (`expiration`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `candidatures`;
+CREATE TABLE `candidatures` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `offre_id` bigint(20) unsigned NOT NULL,
+  `cv` varchar(255) DEFAULT NULL,
+  `status` enum('pending','accepted','refused') NOT NULL DEFAULT 'pending',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `candidatures_user_id_foreign` (`user_id`),
+  KEY `candidatures_offre_id_foreign` (`offre_id`),
+  CONSTRAINT `candidatures_offre_id_foreign` FOREIGN KEY (`offre_id`) REFERENCES `offres` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `candidatures_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `candidatures` (`id`, `user_id`, `offre_id`, `cv`, `status`, `created_at`, `updated_at`) VALUES
+('1', '5', '1', 'cvs/ZmRf9kaSfwocjRkfsRWWmMJvD30gI6RalSdlcOla.pdf', 'accepted', '2026-05-05 11:14:56', '2026-05-07 10:28:48');
+
+DROP TABLE IF EXISTS `entreprises`;
+CREATE TABLE `entreprises` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `is_validated` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `entreprises_user_id_foreign` (`user_id`),
+  CONSTRAINT `entreprises_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `entreprises` (`id`, `user_id`, `name`, `email`, `phone`, `address`, `description`, `is_validated`, `created_at`, `updated_at`) VALUES
+('1', '4', 'code45', 'code45@gmail.com', '0682046824', 'hay nahda- taza', 'something', '0', '2026-05-05 10:51:00', '2026-05-05 10:51:00');
+
+DROP TABLE IF EXISTS `failed_jobs`;
+CREATE TABLE `failed_jobs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) NOT NULL,
+  `connection` text NOT NULL,
+  `queue` text NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `job_batches`;
+CREATE TABLE `job_batches` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `total_jobs` int(11) NOT NULL,
+  `pending_jobs` int(11) NOT NULL,
+  `failed_jobs` int(11) NOT NULL,
+  `failed_job_ids` longtext NOT NULL,
+  `options` mediumtext DEFAULT NULL,
+  `cancelled_at` int(11) DEFAULT NULL,
+  `created_at` int(11) NOT NULL,
+  `finished_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `jobs`;
+CREATE TABLE `jobs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `queue` varchar(255) NOT NULL,
+  `payload` longtext NOT NULL,
+  `attempts` tinyint(3) unsigned NOT NULL,
+  `reserved_at` int(10) unsigned DEFAULT NULL,
+  `available_at` int(10) unsigned NOT NULL,
+  `created_at` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `jobs_queue_index` (`queue`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `migrations`;
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+('1', '0001_01_01_000000_create_users_table', '1'),
+('2', '0001_01_01_000001_create_cache_table', '1'),
+('3', '0001_01_01_000002_create_jobs_table', '1'),
+('4', '2026_04_07_141826_add_role_to_users_table', '1'),
+('5', '2026_04_09_112045_create_entreprises_table', '1'),
+('6', '2026_04_15_194817_create_offres_table', '1'),
+('7', '2026_04_18_173758_create_candidatures_table', '1');
+
+DROP TABLE IF EXISTS `offres`;
+CREATE TABLE `offres` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `entreprise_id` bigint(20) unsigned NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `type` enum('stage','alternance') NOT NULL,
+  `is_published` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `offres_entreprise_id_foreign` (`entreprise_id`),
+  CONSTRAINT `offres_entreprise_id_foreign` FOREIGN KEY (`entreprise_id`) REFERENCES `entreprises` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `offres` (`id`, `entreprise_id`, `title`, `description`, `location`, `type`, `is_published`, `created_at`, `updated_at`) VALUES
+('1', '1', 'Stagiaire Développement Web & Interface', 'Profil : Bac+2 (BTS/DUT Informatique/MMI)\r\nStack : HTML5 · CSS3 · JS (ES6+) · Python · Vue.js/React/Angular · API REST · PHP/Node.js\r\nIoT/électronique : atout', 'Tanger', 'stage', '1', '2026-05-05 10:51:37', '2026-05-05 10:51:37');
+
+DROP TABLE IF EXISTS `password_reset_tokens`;
+CREATE TABLE `password_reset_tokens` (
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `sessions`;
+CREATE TABLE `sessions` (
+  `id` varchar(255) NOT NULL,
+  `user_id` bigint(20) unsigned DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text DEFAULT NULL,
+  `payload` longtext NOT NULL,
+  `last_activity` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sessions_user_id_index` (`user_id`),
+  KEY `sessions_last_activity_index` (`last_activity`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('f9ZtssVj9ZIdoscPoC2tZAtaiNkgKq7qBA9EQPye', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoib013Q2p2Yjhoc3RQMGlwUUlFOWhORTNST1JhSEc2amRYcWFkNGlaYSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL29mZnJlcy9jcmVhdGUiO31zOjk6Il9wcmV2aW91cyI7YToyOntzOjM6InVybCI7czoyNzoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2xvZ2luIjtzOjU6InJvdXRlIjtzOjU6ImxvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', '1778159271'),
+('Gq1FfqlROg13pgGytpwJRBqur21KdmXLu8DyX2EV', '4', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoicmtUTHVyRm9ubXIwUUFPb0V5ZVg1Z3llUFVtb0p0TmdyRXVQYzNYTyI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzU6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9vZmZyZXMvY3JlYXRlIjtzOjU6InJvdXRlIjtzOjEzOiJvZmZyZXMuY3JlYXRlIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NDt9', '1778149747'),
+('HVXyCttxFAqFEQZusii7c8CzomGzy6JQLWedVgJQ', '5', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiSzlHSE5iOTBjbXJIT3NuSGpET0VreVV6NUdvaGgwVXJsbGYxcGF4UiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQiO3M6NToicm91dGUiO3M6OToiZGFzaGJvYXJkIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NTt9', '1777980573'),
+('IpaYKEcnIFLnh7GFVptZ5WqRLNJ9gQHWqH6bfxF3', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiMmZsa09YVVc2Z3d6QVhDOHhqWGQ3bEExQjJUWWdSRDhoWVpadDNvSiI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2Rhc2hib2FyZCI7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvbG9naW4iO3M6NToicm91dGUiO3M6NToibG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', '1778026237'),
+('KjlmVOFFTWZTvfsn51y5mc69kL53NFhLrQhmeRlz', '6', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiMWRTOWZlcW5BUHZyNjJuaUloN1B5Zmx1MEhyWmI0T2MxazRYRlJvNiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQiO3M6NToicm91dGUiO3M6OToiZGFzaGJvYXJkIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Njt9', '1778067044');
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `role` varchar(255) NOT NULL DEFAULT 'student',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`) VALUES
+('2', 'sarra', 'sarra@gmail.com', NULL, '$2y$12$n7VT6yUSvMuKTOGhlOOgqOy1u8DBmtY12BuyomK.ZKc9VF0HQmE6m', NULL, '2026-04-29 13:44:23', '2026-04-29 13:44:23', 'student'),
+('3', 'khalid', 'khalid@gmail.com', NULL, '$2y$12$auaggkDSzUlf8DfF4SLPyeEFD9IOLlBCUunTpN8UBp4s88m24lw2K', NULL, '2026-04-29 13:45:16', '2026-04-29 13:45:16', 'entreprise'),
+('4', 'Bouchra el qartit', 'bouchraelqartit@gmail.com', NULL, '$2y$12$Vm2MfgFumiHYSuI1dUaq.usAObwFLVFztHzzXdX0aLrAaSZaQDoKW', NULL, '2026-05-05 10:48:24', '2026-05-05 10:48:24', 'entreprise'),
+('5', 'Bouchra el qartit', 'bouchraelqrt@gmail.com', NULL, '$2y$12$ZuCeCI7oznuratohb9wFM.gMz0MGvG4LOOXZHlokIY7Jd8nVC4InO', NULL, '2026-05-05 11:13:39', '2026-05-05 11:13:39', 'student'),
+('6', 'hamza', 'hamza@gmail.com', NULL, '$2y$12$k7syy853sQKMT/CoVsxM/OowrMhew3iC.g/KvLoH.DI94bKpeA.7q', NULL, '2026-05-06 10:23:45', '2026-05-06 10:23:45', 'admin');
+
+SET FOREIGN_KEY_CHECKS=1;

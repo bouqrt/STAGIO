@@ -1,29 +1,47 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
+@section('title', 'Profile')
+@section('subtitle', 'Manage your account settings.')
+
+@section('content')
+    <section class="grid">
+        <article class="panel">
+            <div class="panel-head">
+                <div>
+                    <h2 class="panel-title">Profile information</h2>
+                    <p class="panel-subtitle">Update your account details and email address.</p>
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
+            <div class="max-w-xl">
+                @include('profile.partials.update-profile-information-form')
+            </div>
+        </article>
+
+        <article class="panel">
+            <div class="panel-head">
+                <div>
+                    <h2 class="panel-title">Password</h2>
+                    <p class="panel-subtitle">Use a strong password to keep your account secure.</p>
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
+            <div class="max-w-xl">
+                @include('profile.partials.update-password-form')
+            </div>
+        </article>
+    </section>
+
+    <section class="panel">
+        <div class="panel-head">
+            <div>
+                <h2 class="panel-title">Delete account</h2>
+                <p class="panel-subtitle">Use this only if you no longer need your account.</p>
             </div>
         </div>
-    </div>
-</x-app-layout>
+
+        <div class="max-w-xl">
+            @include('profile.partials.delete-user-form')
+        </div>
+    </section>
+@endsection

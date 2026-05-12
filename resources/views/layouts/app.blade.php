@@ -1,56 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <meta charset="UTF-8">
-    <title>Stagio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Dashboard') - {{ config('app.name', 'Stagio') }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    @php($useVite = file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+
+    @if ($useVite)
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @endif
 </head>
-
 <body>
-
-<div class="app">
     @auth
-    <aside class="sidebar">
-        <div class="logo">
-            <div class="logo-box">S</div>
-            <span>STAGIO</span>
+        <div class="dashboard-shell">
+            @include('partials.sidebar')
+
+            <main class="main-panel">
+                @include('partials.navbar')
+
+                <div class="content-area">
+                    @if(session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="alert alert-error">{{ session('error') }}</div>
+                    @endif
+
+                    @if($errors->any())
+                        <div class="alert alert-error">
+                            {{ $errors->first() }}
+                        </div>
+                    @endif
+
+                    @yield('content')
+                </div>
+            </main>
         </div>
-
-        <nav>
-            <a href="/dashboard" class="{{ request()->is('dashboard') ? 'active' : '' }}">🏠 Dashboard</a>
-
-            @if(auth()->user()->role === 'student')
-                <a href="/offres"> Browse Offers</a>
-                <a href="/mes-candidatures"> My Applications</a>
-            @endif
-
-            @if(auth()->user()->role === 'entreprise')
-                <a href="/offres"> My Offers</a>
-                <a href="/entreprise/candidatures"> Applications</a>
-            @endif
-
-            <a href="#"> Settings</a>
-        </nav>
-    </aside>
-    @endauth
-
-    <main class="main">
-
-        @auth
-        <div class="topbar">
-            <h2>@yield('title', 'Dashboard')</h2>
-            <div class="notif">🔔</div>
-        </div>
-        @endauth
-
-        <div class="content">
+    @else
+        <main class="content-area content-area-guest">
             @yield('content')
-        </div>
-
-    </main>
-
-</div>
-
+        </main>
+    @endauth
 </body>
 </html>

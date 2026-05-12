@@ -1,23 +1,22 @@
 @extends('layouts.app')
 
+@if(auth()->user()->role === 'admin')
+    @section('title', 'Admin Dashboard')
+    @section('subtitle', 'See the main statistics of the website.')
+@elseif(auth()->user()->role === 'entreprise')
+    @section('title', 'Entreprise Dashboard')
+    @section('subtitle', 'See your offers and recent applications.')
+@else
+    @section('title', 'Student Dashboard')
+    @section('subtitle', 'See offers and your applications.')
+@endif
+
 @section('content')
-
-<h1> Student Dashboard</h1>
-
-<div class="grid">
-
-    <div class="card">
-        <h3> Voir les offres</h3>
-        <p>Consulte les offres disponibles</p>
-        <a href="/offres"><button>Voir</button></a>
-    </div>
-
-    <div class="card">
-        <h3> Mes candidatures</h3>
-        <p>Suivre mes demandes</p>
-        <a href="/mes-candidatures"><button>Voir</button></a>
-    </div>
-
-</div>
-
+    @if(auth()->user()->role === 'admin')
+        @include('admin.partials.dashboard-content')
+    @elseif(auth()->user()->role === 'entreprise')
+        @include('entreprise.partials.dashboard-content')
+    @else
+        @include('student.partials.dashboard-content')
+    @endif
 @endsection

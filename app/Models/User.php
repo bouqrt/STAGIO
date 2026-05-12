@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -52,6 +53,7 @@ class User extends Authenticatable
         return $this->hasOne(Entreprise::class);
     }
 
+    // Get all applications created by the student.
     public function candidatures()
     {
         return $this->hasMany(Candidature::class);
